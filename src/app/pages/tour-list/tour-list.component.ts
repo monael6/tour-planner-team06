@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Tour, TourCardComponent } from '../../components/tour-card/tour-card.component';
 
 @Component({
   selector: 'app-tour-list',
-  imports: [TourCardComponent],
+  imports: [TourCardComponent, RouterLink],
   templateUrl: './tour-list.component.html',
   styleUrl: './tour-list.component.css'
 })
