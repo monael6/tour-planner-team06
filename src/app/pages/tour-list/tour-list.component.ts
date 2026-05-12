@@ -13,6 +13,15 @@ export class TourListComponent {
   tours: Tour[] = [];
 
   constructor(private tourService: TourService) {
+    this.loadTours();
+  }
+
+  loadTours(): void {
     this.tours = this.tourService.getTours();
+  }
+
+  deleteTour(id: number): void {
+    this.tourService.deleteTour(id);
+    this.loadTours();
   }
 }

@@ -47,4 +47,8 @@ export class TourService {
     tour.id = this.tours.length;
     this.tours.push(tour);
   }
+  
+  deleteTour(id: number): void {
+    this.tours = this.tours.filter(tour => tour.id !== id);
+  }
 }
