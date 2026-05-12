@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Tour, TourService } from '../../services/tour.service';
+import { Tour, TourLog, TourService } from '../../services/tour.service';
 
 @Component({
   selector: 'app-tour-detail',
@@ -10,6 +10,7 @@ import { Tour, TourService } from '../../services/tour.service';
 })
 export class TourDetailComponent {
   tour?: Tour;
+  logs: TourLog[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -17,5 +18,6 @@ export class TourDetailComponent {
   ) {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.tour = this.tourService.getTourById(id);
+    this.logs = this.tourService.getLogsForTour(id);
   }
 }
