@@ -1,17 +1,9 @@
 import { Component } from '@angular/core';
-
-interface Tour {
-  name: string;
-  description: string;
-  from: string;
-  to: string;
-  transportType: string;
-  distance: number;
-}
+import { Tour, TourCardComponent } from '../../components/tour-card/tour-card.component';
 
 @Component({
   selector: 'app-tour-list',
-  imports: [],
+  imports: [TourCardComponent],
   templateUrl: './tour-list.component.html',
   styleUrl: './tour-list.component.css'
 })

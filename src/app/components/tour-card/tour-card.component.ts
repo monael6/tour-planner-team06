@@ -1,4 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+export interface Tour {
+  name: string;
+  description: string;
+  from: string;
+  to: string;
+  transportType: string;
+  distance: number;
+}
 
 @Component({
   selector: 'app-tour-card',
@@ -7,5 +16,5 @@ import { Component } from '@angular/core';
   styleUrl: './tour-card.component.css'
 })
 export class TourCardComponent {
-
+  @Input() tour!: Tour;
 }

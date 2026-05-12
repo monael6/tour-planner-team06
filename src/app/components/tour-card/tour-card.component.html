@@ -1,1 +1,20 @@
-<p>tour-card works!</p>
+<div class="card shadow-sm h-100">
+    <div class="card-body">
+      <h5 class="card-title">{{ tour.name }}</h5>
+  
+      <p class="card-text text-muted">
+        {{ tour.description }}
+      </p>
+  
+      <ul class="list-group list-group-flush mb-3">
+        <li class="list-group-item px-0">From: {{ tour.from }}</li>
+        <li class="list-group-item px-0">To: {{ tour.to }}</li>
+        <li class="list-group-item px-0">Transport: {{ tour.transportType }}</li>
+        <li class="list-group-item px-0">Distance: {{ tour.distance }} km</li>
+      </ul>
+  
+      <button class="btn btn-outline-primary btn-sm">Details</button>
+      <button class="btn btn-outline-secondary btn-sm">Edit</button>
+      <button class="btn btn-outline-danger btn-sm">Delete</button>
+    </div>
+  </div>
