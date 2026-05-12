@@ -41,7 +41,7 @@
                   type="text"
                   class="form-control"
                   name="from"
-                  [(ngModel)]="tour.from"
+                  [(ngModel)]="tour.fromLocation"
                   placeholder="Start location"
                   required
                 >
@@ -53,7 +53,7 @@
                   type="text"
                   class="form-control"
                   name="to"
-                  [(ngModel)]="tour.to"
+                  [(ngModel)]="tour.toLocation"
                   placeholder="Destination"
                   required
                 >
@@ -103,8 +103,8 @@
   
           <h5>Preview</h5>
           <p><strong>Name:</strong> {{ tour.name }}</p>
-          <p><strong>From:</strong> {{ tour.from }}</p>
-          <p><strong>To:</strong> {{ tour.to }}</p>
+          <p><strong>From:</strong> {{ tour.fromLocation }}</p>
+          <p><strong>To:</strong> {{ tour.toLocation }}</p>
           <p><strong>Transport:</strong> {{ tour.transportType }}</p>
           <p><strong>Distance:</strong> {{ tour.distance }} km</p>
         </div>

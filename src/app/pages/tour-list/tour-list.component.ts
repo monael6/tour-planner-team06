@@ -19,7 +19,14 @@ export class TourListComponent {
   }
 
   loadTours(): void {
-    this.tours = this.tourService.getTours();
+    this.tourService.getTours().subscribe({
+      next: (data) => {
+        this.tours = data;
+      },
+      error: (error) => {
+        console.error('Error loading tours:', error);
+      }
+    });
   }
 
   get filteredTours(): Tour[] {
@@ -32,14 +39,13 @@ export class TourListComponent {
     return this.tours.filter(tour =>
       tour.name.toLowerCase().includes(search) ||
       tour.description.toLowerCase().includes(search) ||
-      tour.from.toLowerCase().includes(search) ||
-      tour.to.toLowerCase().includes(search) ||
+      tour.fromLocation.toLowerCase().includes(search) ||
+      tour.toLocation.toLowerCase().includes(search) ||
       tour.transportType.toLowerCase().includes(search)
     );
   }
 
   deleteTour(id: number): void {
-    this.tourService.deleteTour(id);
-    this.loadTours();
+    this.tours = this.tours.filter(tour => tour.id !== id);
   }
 }

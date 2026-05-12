@@ -29,8 +29,8 @@
     @for (tour of filteredTours; track tour.name) {
       <div class="col-md-4">
         <app-tour-card
-          [tour]="tour"
-          (deleteClicked)="deleteTour($event)">
+            [tour]="tour"
+            (deleteClicked)="deleteTour($event)">
         </app-tour-card>
       </div>
     } @empty {

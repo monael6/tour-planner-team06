@@ -16,8 +16,8 @@ export class TourFormComponent {
     id: 0,
     name: '',
     description: '',
-    from: '',
-    to: '',
+    fromLocation: '',
+    toLocation: '',
     transportType: 'Walking',
     distance: 0
   };
