@@ -95,4 +95,8 @@ export class TourService {
 getLogsForTour(tourId: number): TourLog[] {
   return this.tourLogs.filter(log => log.tourId === tourId);
 }
+addLog(log: TourLog): void {
+  log.id = this.tourLogs.length;
+  this.tourLogs.push(log);
+}
 }

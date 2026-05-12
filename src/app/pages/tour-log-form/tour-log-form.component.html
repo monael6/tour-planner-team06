@@ -1,0 +1,101 @@
+<div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h1 class="fw-bold mb-3">Add Tour Log</h1>
+          <p class="text-muted mb-4">
+            Enter information about the completed tour.
+          </p>
+  
+          <form (ngSubmit)="saveLog()">
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input
+                type="date"
+                class="form-control"
+                name="date"
+                [(ngModel)]="log.date"
+                required
+              >
+            </div>
+  
+            <div class="mb-3">
+              <label class="form-label">Comment</label>
+              <textarea
+                class="form-control"
+                rows="3"
+                name="comment"
+                [(ngModel)]="log.comment"
+                placeholder="How was the tour?"
+                required
+              ></textarea>
+            </div>
+  
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Difficulty</label>
+                <select
+                  class="form-select"
+                  name="difficulty"
+                  [(ngModel)]="log.difficulty"
+                >
+                  <option>Easy</option>
+                  <option>Medium</option>
+                  <option>Hard</option>
+                </select>
+              </div>
+  
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Rating</label>
+                <select
+                  class="form-select"
+                  name="rating"
+                  [(ngModel)]="log.rating"
+                >
+                  <option [ngValue]="1">1</option>
+                  <option [ngValue]="2">2</option>
+                  <option [ngValue]="3">3</option>
+                  <option [ngValue]="4">4</option>
+                  <option [ngValue]="5">5</option>
+                </select>
+              </div>
+            </div>
+  
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Total distance in km</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="totalDistance"
+                  [(ngModel)]="log.totalDistance"
+                  required
+                >
+              </div>
+  
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Total time in minutes</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="totalTime"
+                  [(ngModel)]="log.totalTime"
+                  required
+                >
+              </div>
+            </div>
+  
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary">
+                Save Log
+              </button>
+  
+              <a [routerLink]="['/tours', tourId]" class="btn btn-outline-secondary">
+                Cancel
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
