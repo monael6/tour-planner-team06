@@ -13,13 +13,31 @@
     </div>
   </div>
   
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search tours..."
+        name="searchText"
+        [(ngModel)]="searchText"
+      >
+    </div>
+  </div>
+  
   <div class="row g-3">
-    @for (tour of tours; track tour.name) {
+    @for (tour of filteredTours; track tour.name) {
       <div class="col-md-4">
         <app-tour-card
           [tour]="tour"
           (deleteClicked)="deleteTour($event)">
         </app-tour-card>
+      </div>
+    } @empty {
+      <div class="col">
+        <div class="alert alert-info">
+          No tours found.
+        </div>
       </div>
     }
   </div>
