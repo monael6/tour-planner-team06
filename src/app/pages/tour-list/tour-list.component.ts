@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Tour, TourCardComponent } from '../../components/tour-card/tour-card.component';
+import { TourCardComponent } from '../../components/tour-card/tour-card.component';
+import { Tour, TourService } from '../../services/tour.service';
 
 @Component({
   selector: 'app-tour-list',
@@ -9,22 +10,9 @@ import { Tour, TourCardComponent } from '../../components/tour-card/tour-card.co
   styleUrl: './tour-list.component.css'
 })
 export class TourListComponent {
-  tours: Tour[] = [
-    {
-      name: 'Vienna City Walk',
-      description: 'A short walking tour through the city center.',
-      from: 'Stephansplatz',
-      to: 'Prater',
-      transportType: 'Walking',
-      distance: 4.5
-    },
-    {
-      name: 'Danube Bike Tour',
-      description: 'A relaxing bike tour near the Danube river.',
-      from: 'Donauinsel',
-      to: 'Klosterneuburg',
-      transportType: 'Bike',
-      distance: 15
-    }
-  ];
+  tours: Tour[] = [];
+
+  constructor(private tourService: TourService) {
+    this.tours = this.tourService.getTours();
+  }
 }

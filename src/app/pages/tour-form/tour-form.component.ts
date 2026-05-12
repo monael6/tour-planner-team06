@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Tour, TourService } from '../../services/tour.service';
 
 @Component({
   selector: 'app-tour-form',
@@ -9,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './tour-form.component.css'
 })
 export class TourFormComponent {
-  tour = {
+  tour: Tour = {
     name: '',
     description: '',
     from: '',
@@ -18,8 +19,14 @@ export class TourFormComponent {
     distance: 0
   };
 
-  saveTour() {
-    console.log('New tour:', this.tour);
+  constructor(
+    private tourService: TourService,
+    private router: Router
+  ) {}
+
+  saveTour(): void {
+    this.tourService.addTour(this.tour);
     alert('Tour saved successfully!');
+    this.router.navigate(['/tours']);
   }
 }

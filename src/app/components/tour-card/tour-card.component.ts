@@ -1,13 +1,5 @@
 import { Component, Input } from '@angular/core';
-
-export interface Tour {
-  name: string;
-  description: string;
-  from: string;
-  to: string;
-  transportType: string;
-  distance: number;
-}
+import { Tour } from '../../services/tour.service';
 
 @Component({
   selector: 'app-tour-card',
