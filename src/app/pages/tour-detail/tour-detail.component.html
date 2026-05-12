@@ -1,0 +1,29 @@
+@if (tour) {
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h1 class="fw-bold">{{ tour.name }}</h1>
+        <p class="text-muted">{{ tour.description }}</p>
+  
+        <hr>
+  
+        <p><strong>From:</strong> {{ tour.from }}</p>
+        <p><strong>To:</strong> {{ tour.to }}</p>
+        <p><strong>Transport type:</strong> {{ tour.transportType }}</p>
+        <p><strong>Distance:</strong> {{ tour.distance }} km</p>
+  
+        <div class="mt-4">
+          <a routerLink="/tours" class="btn btn-outline-secondary">
+            Back to Tours
+          </a>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="alert alert-danger">
+      Tour not found.
+    </div>
+  
+    <a routerLink="/tours" class="btn btn-outline-secondary">
+      Back to Tours
+    </a>
+  }

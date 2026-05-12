@@ -13,7 +13,9 @@
         <li class="list-group-item px-0">Distance: {{ tour.distance }} km</li>
       </ul>
   
-      <button class="btn btn-outline-primary btn-sm">Details</button>
+      <a [routerLink]="['/tours', tour.id]" class="btn btn-outline-primary btn-sm">
+        Details
+      </a>
       <button class="btn btn-outline-secondary btn-sm">Edit</button>
       <button class="btn btn-outline-danger btn-sm">Delete</button>
     </div>

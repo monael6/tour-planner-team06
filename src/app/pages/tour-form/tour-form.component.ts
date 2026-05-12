@@ -11,6 +11,7 @@ import { Tour, TourService } from '../../services/tour.service';
 })
 export class TourFormComponent {
   tour: Tour = {
+    id: 0,
     name: '',
     description: '',
     from: '',

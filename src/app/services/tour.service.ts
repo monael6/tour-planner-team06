@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 export interface Tour {
+  id: number;
   name: string;
   description: string;
   from: string;
@@ -15,6 +16,7 @@ export interface Tour {
 export class TourService {
   private tours: Tour[] = [
     {
+      id: 0,
       name: 'Vienna City Walk',
       description: 'A short walking tour through the city center.',
       from: 'Stephansplatz',
@@ -23,6 +25,7 @@ export class TourService {
       distance: 4.5
     },
     {
+      id: 1,
       name: 'Danube Bike Tour',
       description: 'A relaxing bike tour near the Danube river.',
       from: 'Donauinsel',
@@ -36,7 +39,12 @@ export class TourService {
     return this.tours;
   }
 
+  getTourById(id: number): Tour | undefined {
+    return this.tours.find(tour => tour.id === id);
+  }
+
   addTour(tour: Tour): void {
+    tour.id = this.tours.length;
     this.tours.push(tour);
   }
 }
