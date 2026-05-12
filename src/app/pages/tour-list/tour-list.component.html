@@ -14,47 +14,28 @@
   </div>
   
   <div class="row g-3">
-    <div class="col-md-4">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
-          <h5 class="card-title">Vienna City Walk</h5>
-          <p class="card-text text-muted">
-            A short walking tour through the city center.
-          </p>
+    @for (tour of tours; track tour.name) {
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ tour.name }}</h5>
   
-          <ul class="list-group list-group-flush mb-3">
-            <li class="list-group-item px-0">From: Stephansplatz</li>
-            <li class="list-group-item px-0">To: Prater</li>
-            <li class="list-group-item px-0">Transport: Walking</li>
-            <li class="list-group-item px-0">Distance: 4.5 km</li>
-          </ul>
+            <p class="card-text text-muted">
+              {{ tour.description }}
+            </p>
   
-          <button class="btn btn-outline-primary btn-sm">Details</button>
-          <button class="btn btn-outline-secondary btn-sm">Edit</button>
-          <button class="btn btn-outline-danger btn-sm">Delete</button>
+            <ul class="list-group list-group-flush mb-3">
+              <li class="list-group-item px-0">From: {{ tour.from }}</li>
+              <li class="list-group-item px-0">To: {{ tour.to }}</li>
+              <li class="list-group-item px-0">Transport: {{ tour.transportType }}</li>
+              <li class="list-group-item px-0">Distance: {{ tour.distance }} km</li>
+            </ul>
+  
+            <button class="btn btn-outline-primary btn-sm">Details</button>
+            <button class="btn btn-outline-secondary btn-sm">Edit</button>
+            <button class="btn btn-outline-danger btn-sm">Delete</button>
+          </div>
         </div>
       </div>
-    </div>
-  
-    <div class="col-md-4">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
-          <h5 class="card-title">Danube Bike Tour</h5>
-          <p class="card-text text-muted">
-            A relaxing bike tour near the Danube river.
-          </p>
-  
-          <ul class="list-group list-group-flush mb-3">
-            <li class="list-group-item px-0">From: Donauinsel</li>
-            <li class="list-group-item px-0">To: Klosterneuburg</li>
-            <li class="list-group-item px-0">Transport: Bike</li>
-            <li class="list-group-item px-0">Distance: 15 km</li>
-          </ul>
-  
-          <button class="btn btn-outline-primary btn-sm">Details</button>
-          <button class="btn btn-outline-secondary btn-sm">Edit</button>
-          <button class="btn btn-outline-danger btn-sm">Delete</button>
-        </div>
-      </div>
-    </div>
+    }
   </div>
