@@ -7,9 +7,9 @@
     </div>
   
     <div class="col text-end">
-        <a routerLink="/tours/new" class="btn btn-primary">
-            + Create Tour
-          </a>
+      <a routerLink="/tours/new" class="btn btn-primary">
+        + Create Tour
+      </a>
     </div>
   </div>
   
@@ -17,9 +17,9 @@
     @for (tour of tours; track tour.name) {
       <div class="col-md-4">
         <app-tour-card
-        [tour]="tour"
-        (deleteClicked)="deleteTour($event)">
-      </app-tour-card>
+          [tour]="tour"
+          (deleteClicked)="deleteTour($event)">
+        </app-tour-card>
       </div>
     }
   </div>

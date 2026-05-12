@@ -47,8 +47,16 @@ export class TourService {
     tour.id = this.tours.length;
     this.tours.push(tour);
   }
-  
+
   deleteTour(id: number): void {
     this.tours = this.tours.filter(tour => tour.id !== id);
+  }
+
+  updateTour(updatedTour: Tour): void {
+    const index = this.tours.findIndex(tour => tour.id === updatedTour.id);
+  
+    if (index !== -1) {
+      this.tours[index] = updatedTour;
+    }
   }
 }

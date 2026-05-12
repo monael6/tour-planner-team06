@@ -20,5 +20,9 @@ export const routes: Routes = [
   {
     path: 'tours/:id',
     component: TourDetailComponent
+  },
+  {
+    path: 'tours/:id/edit',
+    component: TourFormComponent
   }
 ];

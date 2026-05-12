@@ -2,10 +2,12 @@
     <div class="col-md-8">
       <div class="card shadow-sm">
         <div class="card-body">
-          <h1 class="fw-bold mb-3">Create New Tour</h1>
-          <p class="text-muted mb-4">
-            Enter the basic information for a new tour.
-          </p>
+            <h1 class="fw-bold mb-3">
+                {{ isEditMode ? 'Edit Tour' : 'Create New Tour' }}
+              </h1>
+              <p class="text-muted mb-4">
+                {{ isEditMode ? 'Update the information of this tour.' : 'Enter the basic information for a new tour.' }}
+              </p>
   
           <form (ngSubmit)="saveTour()">
             <div class="mb-3">
@@ -88,7 +90,7 @@
   
             <div class="d-flex gap-2">
               <button type="submit" class="btn btn-primary">
-                Save Tour
+                {{ isEditMode ? 'Update Tour' : 'Save Tour' }}
               </button>
   
               <a routerLink="/tours" class="btn btn-outline-secondary">
