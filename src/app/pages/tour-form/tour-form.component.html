@@ -7,33 +7,65 @@
             Enter the basic information for a new tour.
           </p>
   
-          <form>
+          <form (ngSubmit)="saveTour()">
             <div class="mb-3">
               <label class="form-label">Tour name</label>
-              <input type="text" class="form-control" placeholder="e.g. Vienna City Walk">
+              <input
+                type="text"
+                class="form-control"
+                name="name"
+                [(ngModel)]="tour.name"
+                placeholder="e.g. Vienna City Walk"
+                required
+              >
             </div>
   
             <div class="mb-3">
               <label class="form-label">Description</label>
-              <textarea class="form-control" rows="3" placeholder="Short tour description"></textarea>
+              <textarea
+                class="form-control"
+                rows="3"
+                name="description"
+                [(ngModel)]="tour.description"
+                placeholder="Short tour description"
+                required
+              ></textarea>
             </div>
   
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label class="form-label">From</label>
-                <input type="text" class="form-control" placeholder="Start location">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="from"
+                  [(ngModel)]="tour.from"
+                  placeholder="Start location"
+                  required
+                >
               </div>
   
               <div class="col-md-6 mb-3">
                 <label class="form-label">To</label>
-                <input type="text" class="form-control" placeholder="Destination">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="to"
+                  [(ngModel)]="tour.to"
+                  placeholder="Destination"
+                  required
+                >
               </div>
             </div>
   
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label class="form-label">Transport type</label>
-                <select class="form-select">
+                <select
+                  class="form-select"
+                  name="transportType"
+                  [(ngModel)]="tour.transportType"
+                >
                   <option>Walking</option>
                   <option>Bike</option>
                   <option>Running</option>
@@ -43,7 +75,14 @@
   
               <div class="col-md-6 mb-3">
                 <label class="form-label">Distance in km</label>
-                <input type="number" class="form-control" placeholder="0">
+                <input
+                  type="number"
+                  class="form-control"
+                  name="distance"
+                  [(ngModel)]="tour.distance"
+                  placeholder="0"
+                  required
+                >
               </div>
             </div>
   
@@ -57,6 +96,15 @@
               </a>
             </div>
           </form>
+  
+          <hr>
+  
+          <h5>Preview</h5>
+          <p><strong>Name:</strong> {{ tour.name }}</p>
+          <p><strong>From:</strong> {{ tour.from }}</p>
+          <p><strong>To:</strong> {{ tour.to }}</p>
+          <p><strong>Transport:</strong> {{ tour.transportType }}</p>
+          <p><strong>Distance:</strong> {{ tour.distance }} km</p>
         </div>
       </div>
     </div>
