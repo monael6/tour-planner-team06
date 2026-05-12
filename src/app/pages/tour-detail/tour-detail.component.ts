@@ -11,13 +11,18 @@ import { Tour, TourLog, TourService } from '../../services/tour.service';
 export class TourDetailComponent {
   tour?: Tour;
   logs: TourLog[] = [];
+  popularity = '';
+  childFriendliness = '';
 
   constructor(
     private route: ActivatedRoute,
     private tourService: TourService
   ) {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+
     this.tour = this.tourService.getTourById(id);
     this.logs = this.tourService.getLogsForTour(id);
+    this.popularity = this.tourService.getPopularity(id);
+    this.childFriendliness = this.tourService.getChildFriendliness(id);
   }
 }

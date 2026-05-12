@@ -99,4 +99,47 @@ addLog(log: TourLog): void {
   log.id = this.tourLogs.length;
   this.tourLogs.push(log);
 }
+getPopularity(tourId: number): string {
+  const logs = this.getLogsForTour(tourId);
+
+  if (logs.length === 0) {
+    return 'No logs yet';
+  }
+
+  if (logs.length <= 1) {
+    return 'Low';
+  }
+
+  if (logs.length <= 3) {
+    return 'Medium';
+  }
+
+  return 'High';
 }
+
+getChildFriendliness(tourId: number): string {
+  const logs = this.getLogsForTour(tourId);
+
+  if (logs.length === 0) {
+    return 'Unknown';
+  }
+
+  const hasHardLog = logs.some(log => log.difficulty === 'Hard');
+  const averageDistance =
+    logs.reduce((sum, log) => sum + log.totalDistance, 0) / logs.length;
+  const averageTime =
+    logs.reduce((sum, log) => sum + log.totalTime, 0) / logs.length;
+
+  if (hasHardLog || averageDistance > 10 || averageTime > 120) {
+    return 'Low';
+  }
+
+  if (averageDistance > 5 || averageTime > 60) {
+    return 'Medium';
+  }
+
+  return 'High';
+}
+
+}
+
