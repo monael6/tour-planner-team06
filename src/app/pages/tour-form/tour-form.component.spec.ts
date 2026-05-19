@@ -1,23 +1,43 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { Tour, TourService } from '../../services/tour.service';
 
-import { TourFormComponent } from './tour-form.component';
+@Component({
+  selector: 'app-tour-form',
+  imports: [RouterLink, FormsModule],
+  templateUrl: './tour-form.component.html',
+  styleUrl: './tour-form.component.css'
+})
+export class TourFormComponent {
+  isEditMode = false;
 
-describe('TourFormComponent', () => {
-  let component: TourFormComponent;
-  let fixture: ComponentFixture<TourFormComponent>;
+  tour: Tour = {
+    id: 0,
+    name: '',
+    description: '',
+    fromLocation: '',
+    toLocation: '',
+    transportType: 'Walking',
+    distance: 0
+  };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [TourFormComponent]
-    })
-    .compileComponents();
+  constructor(
+    private tourService: TourService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
-    fixture = TestBed.createComponent(TourFormComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  saveTour(): void {
+    this.tourService.addTour(this.tour).subscribe({
+      next: () => {
+        alert('Tour saved successfully!');
+        this.router.navigate(['/tours']);
+      },
+      error: (error) => {
+        console.error('Error saving tour:', error);
+        alert('Error saving tour!');
+      }
+    });
+  }
+}

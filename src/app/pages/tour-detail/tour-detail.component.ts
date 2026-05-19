@@ -20,9 +20,16 @@ export class TourDetailComponent {
   ) {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.tour = this.tourService.getTourById(id);
-    this.logs = this.tourService.getLogsForTour(id);
-    this.popularity = this.tourService.getPopularity(id);
-    this.childFriendliness = this.tourService.getChildFriendliness(id);
+    this.tourService.getTourById(id).subscribe({
+      next: (data) => {
+        this.tour = data;
+        this.logs = this.tourService.getLogsForTour(id);
+        this.popularity = this.tourService.getPopularity(id);
+        this.childFriendliness = this.tourService.getChildFriendliness(id);
+      },
+      error: (error) => {
+        console.error('Error loading tour detail:', error);
+      }
+    });
   }
 }

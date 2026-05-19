@@ -28,31 +28,9 @@ export interface TourLog {
 })
 export class TourService {
   private apiUrl = 'http://localhost:8080/api/tours';
-
   private tours: Tour[] = [];
 
-  private tourLogs: TourLog[] = [
-    {
-      id: 0,
-      tourId: 1,
-      date: '2026-05-10',
-      comment: 'Nice city walk with good weather.',
-      difficulty: 'Easy',
-      totalDistance: 4.5,
-      totalTime: 60,
-      rating: 5
-    },
-    {
-      id: 1,
-      tourId: 2,
-      date: '2026-05-11',
-      comment: 'Long but relaxing bike tour.',
-      difficulty: 'Medium',
-      totalDistance: 15,
-      totalTime: 90,
-      rating: 4
-    }
-  ];
+  private tourLogs: TourLog[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -64,24 +42,15 @@ export class TourService {
     );
   }
 
-  getTourById(id: number): Tour | undefined {
-    return this.tours.find(tour => tour.id === id);
+  getTourById(id: number): Observable<Tour> {
+    return this.http.get<Tour>(`${this.apiUrl}/${id}`);
   }
 
-  addTour(tour: Tour): void {
-    tour.id = this.tours.length + 1;
-    this.tours.push(tour);
+  addTour(tour: Tour): Observable<Tour> {
+    return this.http.post<Tour>(this.apiUrl, tour);
   }
 
-  updateTour(updatedTour: Tour): void {
-    const index = this.tours.findIndex(tour => tour.id === updatedTour.id);
-
-    if (index !== -1) {
-      this.tours[index] = updatedTour;
-    }
-  }
-
-  deleteTour(id: number): void {
+  deleteTourLocal(id: number): void {
     this.tours = this.tours.filter(tour => tour.id !== id);
   }
 

@@ -1,59 +1,91 @@
-# TourPlannerFrontend
+# Tour Planner Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.12.
+This is the Angular frontend for the Tour Planner semester project.
 
-## Development server
+The application allows users to view tours, search tours, open tour details and create new tours.
+The frontend is connected to a Spring Boot backend through a REST API.
 
-To start a local development server, run:
+## Technologies
 
-```bash
+- Angular
+- TypeScript
+- Bootstrap
+- HTML
+- CSS
+- REST API
+- HTTP / JSON communication
+
+## Features
+
+- Tour overview page
+- Tour detail page
+- Create tour form
+- Search tours
+- Navigation bar
+- Angular routing
+- Bootstrap layout
+- Connection to Spring Boot backend
+
+## Backend Connection
+
+The frontend communicates with the Spring Boot backend.
+
+Backend base URL:
+
+http://localhost:8080
+
+Used API endpoints:
+
+- GET http://localhost:8080/api/tours
+- GET http://localhost:8080/api/tours/{id}
+- POST http://localhost:8080/api/tours
+
+The backend must be running before starting the frontend.
+
+## How to Start the Frontend
+
+Open a terminal in the frontend project folder:
+
+cd ~/Desktop/tour-planner-frontend
+
+Install dependencies:
+
+npm install
+
+Start the Angular development server:
+
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open the application in the browser:
 
-## Code scaffolding
+http://localhost:4200
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Tour overview:
 
-```bash
-ng generate component component-name
-```
+http://localhost:4200/tours
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Project Status
 
-```bash
-ng generate --help
-```
+Current status for the intermediate submission:
 
-## Building
+- Angular frontend is implemented
+- Bootstrap styling is included
+- Routing is implemented
+- Tour overview is available
+- Tour detail page is available
+- Create tour form is available
+- Frontend loads tour data from the Spring Boot backend
+- New tours can be created through the frontend and sent to the backend
 
-To build the project run:
+## Next Steps
 
-```bash
-ng build
-```
+Planned features for the final submission:
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- PostgreSQL database
+- JPA / Hibernate persistence
+- Full CRUD functionality
+- Tour logs connected to backend
+- Map integration
+- Import and export functionality
+- Unit tests
+- Logging

@@ -26,29 +26,18 @@ export class TourFormComponent {
     private tourService: TourService,
     private router: Router,
     private route: ActivatedRoute
-  ) {
-    const idParam = this.route.snapshot.paramMap.get('id');
-
-    if (idParam !== null) {
-      const id = Number(idParam);
-      const existingTour = this.tourService.getTourById(id);
-
-      if (existingTour) {
-        this.isEditMode = true;
-        this.tour = { ...existingTour };
-      }
-    }
-  }
+  ) {}
 
   saveTour(): void {
-    if (this.isEditMode) {
-      this.tourService.updateTour(this.tour);
-      alert('Tour updated successfully!');
-    } else {
-      this.tourService.addTour(this.tour);
-      alert('Tour saved successfully!');
-    }
-
-    this.router.navigate(['/tours']);
+    this.tourService.addTour(this.tour).subscribe({
+      next: () => {
+        alert('Tour saved successfully!');
+        this.router.navigate(['/tours']);
+      },
+      error: (error) => {
+        console.error('Error saving tour:', error);
+        alert('Error saving tour!');
+      }
+    });
   }
 }
