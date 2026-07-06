@@ -1,78 +1,161 @@
-@if (tour) {
-    <div class="card shadow-sm mb-4">
-      <div class="card-body">
-        <h1 class="fw-bold">{{ tour.name }}</h1>
-        <p class="text-muted">{{ tour.description }}</p>
-  
-        <hr>
-  
-        <p><strong>From:</strong> {{ tour.fromLocation }}</p>
-        <p><strong>To:</strong> {{ tour.toLocation }}</p>
-        <p><strong>Transport type:</strong> {{ tour.transportType }}</p>
-        <p><strong>Distance:</strong> {{ tour.distance }} km</p>
-        <p><strong>Popularity:</strong> {{ popularity }}</p>
-        <p><strong>Child-friendliness:</strong> {{ childFriendliness }}</p>
-
-
-        <div class="mt-4">
-          <a routerLink="/tours" class="btn btn-outline-secondary">
-            Back to Tours
+<div *ngIf="tour; else notFound" class="container-fluid py-4">
+  <div class="row g-4">
+    <!-- Left column: Details -->
+    <div class="col-lg-6">
+      <div class="detail-glass-card h-100">
+        <div class="detail-header d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <span class="transport-tag" [class]="tour.transportType.toLowerCase()">{{ tour.transportType }}</span>
+            <h1 class="tour-title mt-2">{{ tour.name }}</h1>
+          </div>
+          <a [routerLink]="['/tours', tour.id, 'edit']" class="btn btn-gradient btn-sm">
+            <i class="bi bi-pencil"></i> Bearbeiten
           </a>
+        </div>
+
+        <p class="tour-desc text-secondary">{{ tour.description || 'Keine Beschreibung vorhanden.' }}</p>
+
+        <div class="spec-grid mt-4">
+          <div class="spec-item">
+            <span class="spec-label">Startpunkt</span>
+            <span class="spec-value">{{ tour.fromLocation }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Zielpunkt</span>
+            <span class="spec-value">{{ tour.toLocation }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Distanz</span>
+            <span class="spec-value highlight-cyan">{{ tour.distance }} km</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Dauer</span>
+            <span class="spec-value highlight-cyan">{{ tour.estimatedTime }} Minuten</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Beliebtheit</span>
+            <span class="spec-value badge-popularity" [class]="tour.popularity?.toLowerCase() || 'none'">
+              {{ tour.popularity || 'Keine' }}
+            </span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Kinderfreundlich</span>
+            <span class="spec-value badge-friendliness" [class]="tour.childFriendliness?.toLowerCase() || 'unknown'">
+              {{ tour.childFriendliness || 'Unbekannt' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Optional Image display & Upload -->
+        <div class="image-upload-section mt-4">
+          <label class="spec-label mb-2">Tour-Bild</label>
+          <div class="tour-image-container" *ngIf="tour.imageUrl">
+            <img [src]="'http://localhost:8080' + tour.imageUrl" alt="Tour image" class="tour-image" />
+          </div>
+          <div class="file-upload mt-2">
+            <label class="btn btn-outline-light btn-sm cursor-pointer">
+              <i class="bi bi-camera"></i> Foto hochladen
+              <input type="file" (change)="onImageSelected($event)" accept="image/*" class="d-none">
+            </label>
+          </div>
+        </div>
+
+        <div class="mt-4 d-flex gap-2">
+          <a routerLink="/tours" class="btn btn-outline-light">
+            <i class="bi bi-chevron-left"></i> Zurück zur Übersicht
+          </a>
+          <button (click)="exportPdf()" class="btn btn-gradient">
+            <i class="bi bi-file-pdf"></i> PDF-Bericht erstellen
+          </button>
         </div>
       </div>
     </div>
-  
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h2 class="fw-bold mb-0">Tour Logs</h2>
-  
-          <a [routerLink]="['/tours', tour.id, 'logs', 'new']" class="btn btn-primary">
-            + Add Log
-          </a>
+
+    <!-- Right column: Leaflet Map -->
+    <div class="col-lg-6">
+      <div class="map-glass-card h-100 d-flex flex-column">
+        <div class="map-header mb-3">
+          <h4 class="mb-0">Geografischer Routenverlauf</h4>
+          <span class="text-secondary small">Wird via OpenRouteService berechnet</span>
         </div>
-  
-        @if (logs.length > 0) {
-          <div class="table-responsive">
-            <table class="table table-striped align-middle">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Difficulty</th>
-                  <th>Distance</th>
-                  <th>Time</th>
-                  <th>Rating</th>
-                  <th>Comment</th>
-                </tr>
-              </thead>
-  
-              <tbody>
-                @for (log of logs; track log.id) {
-                  <tr>
-                    <td>{{ log.date }}</td>
-                    <td>{{ log.difficulty }}</td>
-                    <td>{{ log.totalDistance }} km</td>
-                    <td>{{ log.totalTime }} min</td>
-                    <td>{{ log.rating }}/5</td>
-                    <td>{{ log.comment }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-        } @else {
-          <div class="alert alert-info">
-            No logs for this tour yet.
-          </div>
-        }
+        <div id="map" class="flex-grow-1 map-container"></div>
+        <div *ngIf="!tour.routeInformation" class="no-map-overlay">
+          <span>Keine GPS-Route verfügbar. Überprüfen Sie Ihren ORS API-Key.</span>
+        </div>
       </div>
     </div>
-  } @else {
-    <div class="alert alert-danger">
-      Tour not found.
+  </div>
+
+  <!-- Bottom section: Tour Logs -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="logs-glass-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h2 class="mb-1 text-white">Logbucheinträge</h2>
+            <p class="text-secondary small mb-0">Dokumentierte Ausfahrten und Erlebnisse</p>
+          </div>
+          <a [routerLink]="['/tours', tour.id, 'logs', 'new']" class="btn btn-gradient">
+            <i class="bi bi-plus-lg"></i> + Eintrag hinzufügen
+          </a>
+        </div>
+
+        <div *ngIf="logs.length > 0; else noLogs" class="table-responsive">
+          <table class="table custom-table align-middle">
+            <thead>
+              <tr>
+                <th>Datum & Zeit</th>
+                <th>Kommentar</th>
+                <th>Schwierigkeit</th>
+                <th>Distanz</th>
+                <th>Dauer</th>
+                <th>Bewertung</th>
+                <th class="text-end">Aktionen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let log of logs">
+                <td>{{ log.dateTime | date:'dd.MM.yyyy HH:mm' }}</td>
+                <td class="log-comment">{{ log.comment }}</td>
+                <td>
+                  <span class="badge-difficulty" [class]="log.difficulty.toLowerCase()">
+                    {{ log.difficulty }}
+                  </span>
+                </td>
+                <td>{{ log.totalDistance }} km</td>
+                <td>{{ log.totalTime }} Min.</td>
+                <td>
+                  <span class="star-rating">
+                    <span *ngFor="let star of [1,2,3,4,5]" class="star" [class.filled]="star <= log.rating">★</span>
+                  </span>
+                </td>
+                <td class="text-end">
+                  <div class="btn-group gap-2">
+                    <button (click)="deleteLog(log.id!)" class="btn btn-danger btn-sm">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #noLogs>
+          <div class="empty-logs text-center py-4">
+            <span class="display-4">📝</span>
+            <h5 class="mt-2 text-white">Keine Logbucheinträge</h5>
+            <p class="text-secondary small">Fügen Sie Ihren ersten Logeintrag hinzu, um Statistiken wie Popularität zu berechnen!</p>
+          </div>
+        </ng-template>
+      </div>
     </div>
-  
-    <a routerLink="/tours" class="btn btn-outline-secondary">
-      Back to Tours
-    </a>
-  }
+  </div>
+</div>
+
+<ng-template #notFound>
+  <div class="container py-5 text-center text-white">
+    <div class="alert alert-danger d-inline-block">Tour nicht gefunden.</div>
+    <br />
+    <a routerLink="/tours" class="btn btn-gradient mt-3">Zurück zur Übersicht</a>
+  </div>
+</ng-template>

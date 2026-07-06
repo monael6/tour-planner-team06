@@ -1,43 +1,64 @@
-<div class="row mb-4 align-items-center">
-    <div class="col">
-      <h1 class="fw-bold">My Tours</h1>
-      <p class="text-muted">
-        Manage your bike, hike, running and vacation tours.
+<div class="header-banner">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <h1 class="fw-bold text-white">Willkommen, {{ username }}!</h1>
+      <p class="text-secondary">
+        Planen und dokumentieren Sie Ihre Fahrrad-, Wander-, Lauf- und Urlaubsreisen.
       </p>
     </div>
-  
-    <div class="col text-end">
-      <a routerLink="/tours/new" class="btn btn-primary">
-        + Create Tour
-      </a>
+    <div class="col-md-6 text-end">
+      <div class="btn-group gap-2">
+        <a routerLink="/tours/new" class="btn btn-gradient">
+          <i class="bi bi-plus-circle"></i> + Neue Tour
+        </a>
+        <button (click)="exportTours()" class="btn btn-outline-light">
+          <i class="bi bi-download"></i> Export
+        </button>
+        <button (click)="exportSummaryPdf()" class="btn btn-gradient">
+          <i class="bi bi-file-pdf"></i> PDF-Zusammenfassung
+        </button>
+        <label class="btn btn-outline-light mb-0 cursor-pointer">
+          <i class="bi bi-upload"></i> Import
+          <input type="file" (change)="triggerImport($event)" accept=".json" class="d-none">
+        </label>
+        <button (click)="logout()" class="btn btn-danger">
+          <i class="bi bi-box-arrow-right"></i> Abmelden
+        </button>
+      </div>
     </div>
   </div>
-  
-  <div class="row mb-4">
-    <div class="col-md-6">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Search tours..."
-        name="searchText"
-        [(ngModel)]="searchText"
-      >
+</div>
+
+<div class="search-section mt-4 mb-4">
+  <div class="search-box">
+    <input
+      type="text"
+      class="form-control search-input"
+      placeholder="Suchen nach Name, Beschreibung, Ort oder Logs..."
+      name="searchText"
+      [(ngModel)]="searchText"
+      (input)="onSearch()"
+    />
+    <span class="search-icon"><i class="bi bi-search"></i></span>
+  </div>
+</div>
+
+<div class="row g-4">
+  @for (tour of tours; track tour.id) {
+    <div class="col-lg-4 col-md-6">
+      <app-tour-card
+          [tour]="tour"
+          (deleteClicked)="deleteTour($event)">
+      </app-tour-card>
     </div>
-  </div>
-  
-  <div class="row g-3">
-    @for (tour of filteredTours; track tour.name) {
-      <div class="col-md-4">
-        <app-tour-card
-            [tour]="tour"
-            (deleteClicked)="deleteTour($event)">
-        </app-tour-card>
+  } @empty {
+    <div class="col-12">
+      <div class="empty-state">
+        <div class="empty-icon">🗺️</div>
+        <h4>Keine Touren gefunden</h4>
+        <p class="text-secondary">Erstellen Sie eine neue Tour, um loszulegen!</p>
+        <a routerLink="/tours/new" class="btn btn-gradient mt-2">Jetzt erstellen</a>
       </div>
-    } @empty {
-      <div class="col">
-        <div class="alert alert-info">
-          No tours found.
-        </div>
-      </div>
-    }
-  </div>
+    </div>
+  }
+</div>

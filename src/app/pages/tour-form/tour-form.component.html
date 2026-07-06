@@ -1,113 +1,114 @@
-<div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow-sm">
-        <div class="card-body">
-            <h1 class="fw-bold mb-3">
-                {{ isEditMode ? 'Edit Tour' : 'Create New Tour' }}
-              </h1>
-              <p class="text-muted mb-4">
-                {{ isEditMode ? 'Update the information of this tour.' : 'Enter the basic information for a new tour.' }}
-              </p>
-  
-          <form (ngSubmit)="saveTour()">
-            <div class="mb-3">
-              <label class="form-label">Tour name</label>
-              <input
-                type="text"
-                class="form-control"
-                name="name"
-                [(ngModel)]="tour.name"
-                placeholder="e.g. Vienna City Walk"
-                required
-              >
-            </div>
-  
-            <div class="mb-3">
-              <label class="form-label">Description</label>
-              <textarea
-                class="form-control"
-                rows="3"
-                name="description"
-                [(ngModel)]="tour.description"
-                placeholder="Short tour description"
-                required
-              ></textarea>
-            </div>
-  
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">From</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  name="from"
-                  [(ngModel)]="tour.fromLocation"
-                  placeholder="Start location"
-                  required
-                >
-              </div>
-  
-              <div class="col-md-6 mb-3">
-                <label class="form-label">To</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  name="to"
-                  [(ngModel)]="tour.toLocation"
-                  placeholder="Destination"
-                  required
-                >
-              </div>
-            </div>
-  
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Transport type</label>
-                <select
-                  class="form-select"
-                  name="transportType"
-                  [(ngModel)]="tour.transportType"
-                >
-                  <option>Walking</option>
-                  <option>Bike</option>
-                  <option>Running</option>
-                  <option>Vacation</option>
-                </select>
-              </div>
-  
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Distance in km</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  name="distance"
-                  [(ngModel)]="tour.distance"
-                  placeholder="0"
-                  required
-                >
-              </div>
-            </div>
-  
-            <div class="d-flex gap-2">
-              <button type="submit" class="btn btn-primary">
-                {{ isEditMode ? 'Update Tour' : 'Save Tour' }}
-              </button>
-  
-              <a routerLink="/tours" class="btn btn-outline-secondary">
-                Cancel
-              </a>
-            </div>
-          </form>
-  
-          <hr>
-  
-          <h5>Preview</h5>
-          <p><strong>Name:</strong> {{ tour.name }}</p>
-          <p><strong>From:</strong> {{ tour.fromLocation }}</p>
-          <p><strong>To:</strong> {{ tour.toLocation }}</p>
-          <p><strong>Transport:</strong> {{ tour.transportType }}</p>
-          <p><strong>Distance:</strong> {{ tour.distance }} km</p>
+<div class="form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h2>{{ isEditMode ? 'Tour bearbeiten' : 'Neue Tour erstellen' }}</h2>
+      <p class="text-secondary">
+        {{ isEditMode ? 'Aktualisieren Sie die Reisedetails Ihrer Tour.' : 'Tragen Sie die Start- und Zielorte ein. Distanz und Dauer werden automatisch berechnet.' }}
+      </p>
+    </div>
+
+    <div *ngIf="loading" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Speichert Route...</p>
+    </div>
+
+    <form (ngSubmit)="saveTour()" #tourForm="ngForm" *ngIf="!loading">
+      <div class="form-group">
+        <label for="name">Tourname</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          [(ngModel)]="tour.name"
+          required
+          class="form-control"
+          placeholder="z.B. Donauradweg Etappe 1"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Beschreibung</label>
+        <textarea
+          id="description"
+          name="description"
+          [(ngModel)]="tour.description"
+          class="form-control"
+          rows="3"
+          placeholder="Schreiben Sie ein paar Details über diese Tour..."
+        ></textarea>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <label for="fromLocation">Startpunkt</label>
+          <input
+            type="text"
+            id="fromLocation"
+            name="fromLocation"
+            [(ngModel)]="tour.fromLocation"
+            required
+            class="form-control"
+            placeholder="z.B. Wien, Österreich"
+          />
+        </div>
+
+        <div class="col-md-6 form-group">
+          <label for="toLocation">Endpunkt</label>
+          <input
+            type="text"
+            id="toLocation"
+            name="toLocation"
+            [(ngModel)]="tour.toLocation"
+            required
+            class="form-control"
+            placeholder="z.B. Bratislava, Slowakei"
+          />
         </div>
       </div>
-    </div>
+
+      <div class="form-group">
+        <label for="transportType">Transportart</label>
+        <select
+          id="transportType"
+          name="transportType"
+          [(ngModel)]="tour.transportType"
+          required
+          class="form-control form-select"
+        >
+          <option *ngFor="let type of transportTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+
+      <div class="row" *ngIf="isEditMode">
+        <div class="col-md-6 form-group">
+          <label>Berechnete Distanz (km)</label>
+          <input
+            type="text"
+            [value]="tour.distance"
+            readonly
+            class="form-control readonly-input"
+          />
+        </div>
+
+        <div class="col-md-6 form-group">
+          <label>Berechnete Dauer (Minuten)</label>
+          <input
+            type="text"
+            [value]="tour.estimatedTime"
+            readonly
+            class="form-control readonly-input"
+          />
+        </div>
+      </div>
+
+      <div class="form-actions mt-4 gap-3">
+        <button type="submit" [disabled]="!tourForm.valid" class="btn btn-primary">
+          {{ isEditMode ? 'Änderungen speichern' : 'Tour erstellen' }}
+        </button>
+        <a routerLink="/tours" class="btn btn-outline-light">
+          Abbrechen
+        </a>
+      </div>
+    </form>
   </div>
+</div>

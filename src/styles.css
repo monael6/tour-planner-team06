@@ -1,1 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
+/* Import Leaflet CSS */
+@import "leaflet/dist/leaflet.css";
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Global Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: rgb(18, 23, 37);
+  background-image: radial-gradient(circle at 10% 20%, rgb(18, 23, 37) 0%, rgb(33, 40, 58) 90%);
+  background-attachment: fixed;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(18, 23, 37);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Leaflet Map Styling Tweaks */
+.leaflet-container {
+  font-family: 'Inter', sans-serif;
+  background: #1a202c !important;
+}
+
+.leaflet-bar a, .leaflet-bar a:hover {
+  background-color: #2d3748 !important;
+  color: #fff !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: #2d3748 !important;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+  border-radius: 8px;
+}
+
+.leaflet-popup-content {
+  font-size: 0.85rem;
+  font-weight: 500;
+}

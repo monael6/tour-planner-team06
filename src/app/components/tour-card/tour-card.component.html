@@ -1,28 +1,46 @@
-<div class="card shadow-sm h-100">
-    <div class="card-body">
-      <h5 class="card-title">{{ tour.name }}</h5>
-  
-      <p class="card-text text-muted">
-        {{ tour.description }}
-      </p>
-  
-      <ul class="list-group list-group-flush mb-3">
-        <li class="list-group-item px-0">From: {{ tour.fromLocation }}</li>
-        <li class="list-group-item px-0">To: {{ tour.toLocation }}</li>
-        <li class="list-group-item px-0">Transport: {{ tour.transportType }}</li>
-        <li class="list-group-item px-0">Distance: {{ tour.distance }} km</li>
-      </ul>
-  
-      <a [routerLink]="['/tours', tour.id]" class="btn btn-outline-primary btn-sm">
+<div class="tour-glass-card h-100 d-flex flex-column">
+  <div class="card-image-placeholder">
+    <div class="transport-badge" [class]="tour.transportType.toLowerCase()">
+      {{ tour.transportType }}
+    </div>
+    <span class="card-distance-badge">{{ tour.distance }} km</span>
+  </div>
+
+  <div class="card-content d-flex flex-column flex-grow-1">
+    <h3 class="card-title">{{ tour.name }}</h3>
+    <p class="card-desc text-secondary flex-grow-1">{{ tour.description || 'Keine Beschreibung vorhanden.' }}</p>
+
+    <div class="route-info-grid mb-3">
+      <div class="info-item">
+        <span class="info-label">Start</span>
+        <span class="info-value">{{ tour.fromLocation }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Ziel</span>
+        <span class="info-value">{{ tour.toLocation }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Dauer</span>
+        <span class="info-value">{{ tour.estimatedTime ? tour.estimatedTime + ' Min.' : '--' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Kinderfreundlich</span>
+        <span class="info-value badge-friendliness" [class]="tour.childFriendliness?.toLowerCase() || 'unknown'">
+          {{ tour.childFriendliness || 'Unbekannt' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="card-actions gap-2">
+      <a [routerLink]="['/tours', tour.id]" class="btn btn-action btn-view">
         Details
       </a>
-  
-      <a [routerLink]="['/tours', tour.id, 'edit']" class="btn btn-outline-secondary btn-sm">
-        Edit
+      <a [routerLink]="['/tours', tour.id, 'edit']" class="btn btn-action btn-edit">
+        Bearbeiten
       </a>
-  
-      <button class="btn btn-outline-danger btn-sm" (click)="onDelete()">
-        Delete
+      <button class="btn btn-action btn-delete" (click)="onDelete()">
+        Löschen
       </button>
     </div>
   </div>
+</div>

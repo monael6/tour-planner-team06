@@ -1,21 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export interface Tour {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   fromLocation: string;
   toLocation: string;
   transportType: string;
   distance: number;
+  estimatedTime: number;
+  routeInformation?: string;
+  imageUrl?: string;
+  popularity?: string;
+  childFriendliness?: string;
 }
 
 export interface TourLog {
-  id: number;
+  id?: number;
   tourId: number;
-  date: string;
+  dateTime: string; // ISO String (LocalDateTime in Java)
   comment: string;
   difficulty: string;
   totalDistance: number;
@@ -28,18 +33,15 @@ export interface TourLog {
 })
 export class TourService {
   private apiUrl = 'http://localhost:8080/api/tours';
-  private tours: Tour[] = [];
-
-  private tourLogs: TourLog[] = [];
 
   constructor(private http: HttpClient) {}
 
+  // ==========================================
+  // Tour CRUD Operations (Scoped to logged-in user)
+  // ==========================================
+
   getTours(): Observable<Tour[]> {
-    return this.http.get<Tour[]>(this.apiUrl).pipe(
-      tap((data) => {
-        this.tours = data;
-      })
-    );
+    return this.http.get<Tour[]>(this.apiUrl);
   }
 
   getTourById(id: number): Observable<Tour> {
@@ -50,58 +52,71 @@ export class TourService {
     return this.http.post<Tour>(this.apiUrl, tour);
   }
 
-  deleteTourLocal(id: number): void {
-    this.tours = this.tours.filter(tour => tour.id !== id);
+  updateTour(id: number, tour: Tour): Observable<Tour> {
+    return this.http.put<Tour>(`${this.apiUrl}/${id}`, tour);
   }
 
-  getLogsForTour(tourId: number): TourLog[] {
-    return this.tourLogs.filter(log => log.tourId === tourId);
+  deleteTour(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  addLog(log: TourLog): void {
-    log.id = this.tourLogs.length;
-    this.tourLogs.push(log);
+  searchTours(query: string): Observable<Tour[]> {
+    return this.http.get<Tour[]>(`${this.apiUrl}/search?query=${encodeURIComponent(query)}`);
   }
 
-  getPopularity(tourId: number): string {
-    const logs = this.getLogsForTour(tourId);
+  // ==========================================
+  // Tour Logs (Nested REST resource under Tours)
+  // ==========================================
 
-    if (logs.length === 0) {
-      return 'No logs yet';
-    }
-
-    if (logs.length <= 1) {
-      return 'Low';
-    }
-
-    if (logs.length <= 3) {
-      return 'Medium';
-    }
-
-    return 'High';
+  getLogsForTour(tourId: number): Observable<TourLog[]> {
+    return this.http.get<TourLog[]>(`${this.apiUrl}/${tourId}/logs`);
   }
 
-  getChildFriendliness(tourId: number): string {
-    const logs = this.getLogsForTour(tourId);
+  addLog(tourId: number, log: TourLog): Observable<TourLog> {
+    return this.http.post<TourLog>(`${this.apiUrl}/${tourId}/logs`, log);
+  }
 
-    if (logs.length === 0) {
-      return 'Unknown';
-    }
+  updateLog(tourId: number, logId: number, log: TourLog): Observable<TourLog> {
+    return this.http.put<TourLog>(`${this.apiUrl}/${tourId}/logs/${logId}`, log);
+  }
 
-    const hasHardLog = logs.some(log => log.difficulty === 'Hard');
-    const averageDistance =
-      logs.reduce((sum, log) => sum + log.totalDistance, 0) / logs.length;
-    const averageTime =
-      logs.reduce((sum, log) => sum + log.totalTime, 0) / logs.length;
+  deleteLog(tourId: number, logId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${tourId}/logs/${logId}`);
+  }
 
-    if (hasHardLog || averageDistance > 10 || averageTime > 120) {
-      return 'Low';
-    }
+  // ==========================================
+  // Image Upload
+  // ==========================================
 
-    if (averageDistance > 5 || averageTime > 60) {
-      return 'Medium';
-    }
+  uploadImage(tourId: number, file: File): Observable<{ imageUrl: string }> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<{ imageUrl: string }>(`${this.apiUrl}/${tourId}/image`, formData);
+  }
 
-    return 'High';
+  // ==========================================
+  // JSON Import / Export
+  // ==========================================
+
+  exportTours(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/export`, { responseType: 'blob' });
+  }
+
+  importTours(jsonString: string): Observable<Tour[]> {
+    return this.http.post<Tour[]>(`${this.apiUrl}/import`, jsonString, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  // ==========================================
+  // PDF Report Generation
+  // ==========================================
+
+  exportTourPdf(tourId: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${tourId}/pdf`, { responseType: 'blob' });
+  }
+
+  exportSummaryPdf(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/pdf-summary`, { responseType: 'blob' });
   }
 }
