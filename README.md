@@ -66,26 +66,12 @@ http://localhost:4200/tours
 
 ## Project Status
 
-Current status for the intermediate submission:
+All planned features for the final submission have been implemented:
 
-- Angular frontend is implemented
-- Bootstrap styling is included
-- Routing is implemented
-- Tour overview is available
-- Tour detail page is available
-- Create tour form is available
-- Frontend loads tour data from the Spring Boot backend
-- New tours can be created through the frontend and sent to the backend
-
-## Next Steps
-
-Planned features for the final submission:
-
-- PostgreSQL database
-- JPA / Hibernate persistence
-- Full CRUD functionality
-- Tour logs connected to backend
-- Map integration
-- Import and export functionality
-- Unit tests
-- Logging
+- Angular frontend with Bootstrap styling
+- UI components and forms for full CRUD (tours and logs)
+- Leaflet map integration to display routes
+- JWT authentication (login, register, and automatic header interceptor)
+- PDF report downloads (single tour and summary)
+- JSON backup import and export for tours
+- Unit tests (Jasmine & Karma)
