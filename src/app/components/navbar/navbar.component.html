@@ -1,11 +1,30 @@
-<nav class="navbar navbar-expand-lg bg-primary navbar-dark">
-    <div class="container">
-      <a class="navbar-brand fw-bold" routerLink="/tours">Tour Planner</a>
-  
-      <div class="navbar-nav">
-        <a class="nav-link active" routerLink="/tours">Tours</a>
-        <a class="nav-link" routerLink="/tours/new">New Tour</a>
-        <a class="nav-link" href="#">Login</a>
+<nav class="navbar navbar-expand-lg navbar-dark premium-nav">
+  <div class="container">
+    <a class="navbar-brand fw-bold brand-gradient" routerLink="/tours">
+      <i class="bi bi-compass"></i> Tour Planner
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="navbar-nav ms-auto gap-2 align-items-center">
+        <ng-container *ngIf="authService.isLoggedIn(); else authLinks">
+          <a class="nav-link" routerLink="/tours" routerLinkActive="active">Touren</a>
+          <a class="nav-link" routerLink="/tours/new" routerLinkActive="active">Neue Tour</a>
+          <span class="user-greeting ms-2">
+            Hallo, <strong>{{ authService.getUsername() }}</strong>
+          </span>
+          <button (click)="logout()" class="btn btn-outline-danger btn-sm ms-2">
+            Abmelden
+          </button>
+        </ng-container>
+        <ng-template #authLinks>
+          <a class="nav-link" routerLink="/login" routerLinkActive="active">Anmelden</a>
+          <a class="btn btn-gradient btn-sm text-white px-3" routerLink="/register">Registrieren</a>
+        </ng-template>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>

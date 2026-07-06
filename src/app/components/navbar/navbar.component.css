@@ -1,0 +1,50 @@
+.premium-nav {
+  background: rgba(18, 23, 37, 0.8) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 15px 0;
+  z-index: 1000;
+}
+
+.brand-gradient {
+  font-size: 1.4rem;
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-gradient i {
+  color: #00f2fe;
+  -webkit-text-fill-color: #00f2fe;
+}
+
+.nav-link {
+  color: #a0aec0 !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #00f2fe !important;
+}
+
+.user-greeting {
+  color: #cbd5e0;
+  font-size: 0.9rem;
+}
+
+.btn-gradient {
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  border: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  opacity: 0.9;
+  box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4);
+}

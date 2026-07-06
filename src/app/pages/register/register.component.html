@@ -1,0 +1,62 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h2>Registrieren</h2>
+      <p>Erstellen Sie ein Konto, um Ihre Touren zu planen</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+      <div class="form-group">
+        <label for="username">Benutzername</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="user.username"
+          required
+          minlength="3"
+          class="form-control"
+          placeholder="z.B. max_mustermann"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-Mail Adresse</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="user.email"
+          required
+          email
+          class="form-control"
+          placeholder="max@mustermann.de"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Passwort</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="user.password"
+          required
+          minlength="6"
+          class="form-control"
+          placeholder="Mind. 6 Zeichen"
+        />
+      </div>
+
+      <button type="submit" [disabled]="!registerForm.valid" class="btn btn-primary btn-block">
+        Konto erstellen
+      </button>
+
+      <div class="auth-footer">
+        Bereits registriert? <a routerLink="/login">Anmelden</a>
+      </div>
+    </form>
+  </div>
+</div>
