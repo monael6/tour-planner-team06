@@ -1,43 +1,45 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TourFormComponent } from './tour-form.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TourService } from '../../services/tour.service';
+import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { Tour, TourService } from '../../services/tour.service';
+import { provideRouter } from '@angular/router';
+import { convertToParamMap } from '@angular/router';
 
-@Component({
-  selector: 'app-tour-form',
-  imports: [RouterLink, FormsModule],
-  templateUrl: './tour-form.component.html',
-  styleUrl: './tour-form.component.css'
-})
-export class TourFormComponent {
-  isEditMode = false;
+describe('TourFormComponent', () => {
+  let component: TourFormComponent;
+  let fixture: ComponentFixture<TourFormComponent>;
+  let mockTourService: any;
+  let mockActivatedRoute: any;
 
-  tour: Tour = {
-    id: 0,
-    name: '',
-    description: '',
-    fromLocation: '',
-    toLocation: '',
-    transportType: 'Walking',
-    distance: 0
-  };
-
-  constructor(
-    private tourService: TourService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
-
-  saveTour(): void {
-    this.tourService.addTour(this.tour).subscribe({
-      next: () => {
-        alert('Tour saved successfully!');
-        this.router.navigate(['/tours']);
+  beforeEach(async () => {
+    mockTourService = jasmine.createSpyObj(['getTourById', 'addTour', 'updateTour']);
+    
+    mockActivatedRoute = {
+      snapshot: {
+        paramMap: convertToParamMap({})
       },
-      error: (error) => {
-        console.error('Error saving tour:', error);
-        alert('Error saving tour!');
-      }
-    });
-  }
-}
+      get root() { return this; },
+      get pathFromRoot() { return [this]; }
+    };
+
+    await TestBed.configureTestingModule({
+      imports: [TourFormComponent, FormsModule],
+      providers: [
+        { provide: TourService, useValue: mockTourService },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        provideRouter([])
+      ]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(TourFormComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

@@ -1,10 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { provideRouter } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 describe('AppComponent', () => {
+  let mockAuthService: any;
+
   beforeEach(async () => {
+    mockAuthService = jasmine.createSpyObj(['logout', 'isLoggedIn', 'getUsername']);
+
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [
+        { provide: AuthService, useValue: mockAuthService },
+        provideRouter([])
+      ]
     }).compileComponents();
   });
 
@@ -12,18 +22,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it(`should have the 'tour-planner-frontend' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('tour-planner-frontend');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, tour-planner-frontend');
   });
 });

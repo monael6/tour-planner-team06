@@ -1,50 +1,43 @@
-import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TourListComponent } from './tour-list.component';
+import { TourService } from '../../services/tour.service';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { TourCardComponent } from '../../components/tour-card/tour-card.component';
-import { Tour, TourService } from '../../services/tour.service';
+import { provideRouter } from '@angular/router';
 
-@Component({
-  selector: 'app-tour-list',
-  imports: [TourCardComponent, RouterLink, FormsModule],
-  templateUrl: './tour-list.component.html',
-  styleUrl: './tour-list.component.css'
-})
-export class TourListComponent {
-deleteTour($event: number) {
-throw new Error('Method not implemented.');
-}
-  tours: Tour[] = [];
-  searchText = '';
+describe('TourListComponent', () => {
+  let component: TourListComponent;
+  let fixture: ComponentFixture<TourListComponent>;
+  let mockTourService: any;
+  let mockAuthService: any;
+  let router: Router;
 
-  constructor(private tourService: TourService) {
-    this.loadTours();
-  }
+  beforeEach(async () => {
+    mockTourService = jasmine.createSpyObj(['getTours', 'searchTours', 'deleteTour']);
+    mockTourService.getTours.and.returnValue(of([]));
+    mockAuthService = jasmine.createSpyObj(['getUsername', 'logout']);
+    mockAuthService.getUsername.and.returnValue('TestUser');
 
-  loadTours(): void {
-    this.tourService.getTours().subscribe({
-      next: (data) => {
-        this.tours = data;
-      },
-      error: (error) => {
-        console.error('Error loading tours:', error);
-      }
-    });
-  }
+    await TestBed.configureTestingModule({
+      imports: [TourListComponent, FormsModule],
+      providers: [
+        { provide: TourService, useValue: mockTourService },
+        { provide: AuthService, useValue: mockAuthService },
+        provideRouter([])
+      ]
+    })
+    .compileComponents();
 
-  get filteredTours(): Tour[] {
-    const search = this.searchText.toLowerCase().trim();
+    fixture = TestBed.createComponent(TourListComponent);
+    component = fixture.componentInstance;
+    router = TestBed.inject(Router);
+    spyOn(router, 'navigate');
+    fixture.detectChanges();
+  });
 
-    if (!search) {
-      return this.tours;
-    }
-
-    return this.tours.filter(tour =>
-      tour.name.toLowerCase().includes(search) ||
-      tour.description.toLowerCase().includes(search) ||
-      tour.fromLocation.toLowerCase().includes(search) ||
-      tour.toLocation.toLowerCase().includes(search) ||
-      tour.transportType.toLowerCase().includes(search)
-    );
-  }
-}
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
