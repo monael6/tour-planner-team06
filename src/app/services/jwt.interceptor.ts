@@ -9,9 +9,11 @@ import { AuthService } from './auth.service';
  */
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-  const token = authService.getToken();
+  const token = authService.getToken(); // Holt das Token aus dem localStorage
 
-  // Only attach header to our local API calls
+  // Interceptor fängt jeden HTTP-Request an den Server ab.
+  // Wenn ein Token existiert und der Request an unsere API geht,
+  // hängen wir das Token im Authorization-Header (Bearer <token>) an.
   if (token && req.url.includes('/api/')) {
     req = req.clone({
       setHeaders: {
@@ -20,5 +22,6 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
     });
   }
 
+  // Request an das nächste Glied in der Kette weitergeben
   return next(req);
 };

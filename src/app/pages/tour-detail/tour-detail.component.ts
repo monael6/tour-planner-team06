@@ -123,20 +123,22 @@ export class TourDetailComponent implements OnInit, AfterViewChecked {
     this.mapInitialized = true;
 
     try {
+      // 1. Die vom Backend gelieferten GeoJSON-Geodaten parsen
       const geoData = JSON.parse(this.tour.routeInformation);
 
-      // Create Leaflet Map instance
+      // 2. Leaflet-Karten-Instanz erzeugen (Standard-Ausschnitt auf Wien zentriert)
       this.map = L.map('map', {
         zoomControl: true,
         fadeAnimation: true
-      }).setView([48.2082, 16.3738], 13); // Vienna default
+      }).setView([48.2082, 16.3738], 13); // Wien Koordinaten
 
+      // 3. Karten-Kacheln von OpenStreetMap hinzufügen
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap contributors'
       }).addTo(this.map);
 
-      // Add route geometry Layer
+      // 4. Den Routenverlauf (GeoJSON-Geometrie) als blau-cyanfarbene Linie auf die Karte zeichnen
       const routeLayer = L.geoJSON(geoData, {
         style: {
           color: '#00f2fe',
@@ -145,16 +147,16 @@ export class TourDetailComponent implements OnInit, AfterViewChecked {
         }
       }).addTo(this.map);
 
-      // Set view boundaries
+      // 5. Kartenausschnitt automatisch an die Ausdehnung (Bounds) der Route anpassen
       this.map.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
 
-      // Add Start/End Markers
+      // 6. Start- und Ziel-Marker setzen
       const coordinates = geoData.features[0].geometry.coordinates;
       if (coordinates && coordinates.length > 0) {
         const startPoint = coordinates[0];
         const endPoint = coordinates[coordinates.length - 1];
 
-        // start point Leaflet accepts [lat, lng] whereas GeoJSON is [lng, lat]
+        // GeoJSON nutzt [lng, lat], aber Leaflet benötigt [lat, lng] (Reihenfolge getauscht!)
         L.marker([startPoint[1], startPoint[0]]).addTo(this.map).bindPopup('Startpunkt: ' + this.tour.fromLocation);
         L.marker([endPoint[1], endPoint[0]]).addTo(this.map).bindPopup('Zielpunkt: ' + this.tour.toLocation);
       }
